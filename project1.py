@@ -390,8 +390,8 @@ def bag_of_words(texts):
     for text in texts:
         word_list = extract_words(text)
         for word in word_list:
-            if word in stopwords:
-                continue
+            #if word in stopwords:
+            #    continue
             if word not in dictionary:
                 dictionary[word] = len(dictionary)
     return dictionary
@@ -399,28 +399,51 @@ def bag_of_words(texts):
 
 
 #pragma: coderesponse template
-def extract_bow_feature_vectors(reviews, dictionary):
-    """
-    Inputs a list of string reviews
-    Inputs the dictionary of words as given by bag_of_words
-    Returns the bag-of-words feature matrix representation of the data.
-    The returned matrix is of shape (n, m), where n is the number of reviews
-    and m the total number of entries in the dictionary.
+# def extract_bow_feature_vectors(reviews, dictionary):
+#     """
+#     Inputs a list of string reviews
+#     Inputs the dictionary of words as given by bag_of_words
+#     Returns the bag-of-words feature matrix representation of the data.
+#     The returned matrix is of shape (n, m), where n is the number of reviews
+#     and m the total number of entries in the dictionary.
 
-    Feel free to change this code as guided by Problem 9
+#     Feel free to change this code as guided by Problem 9
+#     """
+#     # Your code here
+
+#     num_reviews = len(reviews)
+#     feature_matrix = np.zeros([num_reviews, len(dictionary)])
+
+#     for i, text in enumerate(reviews):
+#         word_list = extract_words(text)
+#         for word in word_list:
+#             if word in dictionary:
+#                 feature_matrix[i, dictionary[word]] = 1
+#     return feature_matrix
+#pragma: coderesponse end
+def extract_bow_feature_vectors(reviews, indices_by_word, binarize=True):
+    """
+    Args:
+        `reviews` - a list of natural language strings
+        `indices_by_word` - a dictionary of uniquely-indexed words.
+    Returns:
+        a matrix representing each review via bag-of-words features.  This
+        matrix thus has shape (n, m), where n counts reviews and m counts words
+        in the dictionary.
     """
     # Your code here
-
-    num_reviews = len(reviews)
-    feature_matrix = np.zeros([num_reviews, len(dictionary)])
-
+    feature_matrix = np.zeros([len(reviews), len(indices_by_word)], dtype=np.float64)
     for i, text in enumerate(reviews):
         word_list = extract_words(text)
         for word in word_list:
-            if word in dictionary:
-                feature_matrix[i, dictionary[word]] = 1
+            if word not in indices_by_word: continue
+            #feature_matrix[i, indices_by_word[word]] += 1
+            feature_matrix[i, indices_by_word[word]] = 1 if binarize else feature_matrix[i, indices_by_word[word]] + 1
+
+    #if binarize:
+    #    # Your code here
+    #    raise NotImplementedError
     return feature_matrix
-#pragma: coderesponse end
 
 
 #pragma: coderesponse template
