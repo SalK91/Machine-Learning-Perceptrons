@@ -390,8 +390,8 @@ def bag_of_words(texts):
     for text in texts:
         word_list = extract_words(text)
         for word in word_list:
-            #if word in stopwords:
-            #    continue
+            if word in stopwords:
+                continue
             if word not in dictionary:
                 dictionary[word] = len(dictionary)
     return dictionary
@@ -421,7 +421,7 @@ def bag_of_words(texts):
 #                 feature_matrix[i, dictionary[word]] = 1
 #     return feature_matrix
 #pragma: coderesponse end
-def extract_bow_feature_vectors(reviews, indices_by_word, binarize=True):
+def extract_bow_feature_vectors(reviews, indices_by_word, binarize=False):
     """
     Args:
         `reviews` - a list of natural language strings
